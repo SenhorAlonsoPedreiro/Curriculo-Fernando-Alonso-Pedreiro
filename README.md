@@ -3,7 +3,7 @@
 > "Do asfalto de Mônaco para o reboco em Irecê."
 
 ## 📖 Sobre a História (The Lore)
-Após uma longa e vitoriosa carreira na Fórmula 1, **Fernando Alonso (24 anos)** decidiu se aposentar e buscar paz no interior do Brasil, especificamente em **Irecê, Bahia**. 
+Após uma longa e vitoriosa carreira na Fórmula 1, **Fernando Alonso** decidiu se aposentar e buscar paz no interior do Brasil, especificamente em **Irecê, Bahia**. 
 
 Porém, a calmaria durou pouco! Entediado com a vida mansa e querendo novos desafios, ele decidiu que não queria ficar parado. Buscando qualificação técnica de ponta, matriculou-se no **SENAI da Bahia** e descobriu uma nova paixão: a **Construção Civil**.
 
