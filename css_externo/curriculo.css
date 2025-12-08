@@ -1,0 +1,467 @@
+/* --- ESTILO DO BOTÃO TOGGLE (MUDANÇA DE TEMA) --- */
+
+/* Wrapper para posicionar o botão no canto superior direito */
+.theme-switch-wrapper {
+    position: fixed; /* Fixa na tela mesmo rolando */
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* Garante que fique acima de tudo */
+}
+
+/* O container do botão (a pílula) */
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    width: 70px; /* Largura suficiente para caber ícone e bolinha */
+    position: relative;
+}
+
+/* Esconde o checkbox padrão do HTML (a caixinha feia) */
+.theme-switch input {
+    display: none;
+}
+
+/* A trilha do botão (o fundo colorido) */
+.slider {
+    background-color: #ff4500; /* Cor inicial: Laranja (Dia) */
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s; /* Tempo da animação de cor */
+    border-radius: 34px; /* Deixa as bordas redondas */
+    border: 2px solid white; /* Borda branca para destaque */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+/* A bolinha branca que se move */
+.slider:before {
+    background-color: #fff;
+    bottom: 3px; /* Espaço inferior */
+    content: "";
+    height: 24px; /* Altura da bolinha */
+    left: 4px; /* Posição inicial na esquerda */
+    position: absolute;
+    transition: .4s; /* Tempo da animação de movimento */
+    width: 24px; /* Largura da bolinha */
+    border-radius: 50%; /* Faz virar um círculo perfeito */
+    z-index: 2; /* Fica acima dos ícones */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* --- ESTADOS QUANDO O CHECKBOX ESTÁ MARCADO (DARK MODE) --- */
+
+/* Muda a cor do fundo para preto quando ativado */
+input:checked + .slider {
+    background-color: #1a1a1a; /* Preto (Noite) */
+}
+
+/* Move a bolinha para a direita quando ativado */
+input:checked + .slider:before {
+    transform: translateX(36px); /* Desloca 36 pixels para o lado */
+}
+
+/* --- ESTILO DOS ÍCONES (SOL E LUA) --- */
+.icon-sun, .icon-moon {
+    font-size: 16px;
+    z-index: 1; /* Fica atrás da bolinha branca quando ela passa por cima */
+    user-select: none; /* Impede selecionar o texto do ícone */
+}
+
+.icon-sun {
+    margin-left: 5px; /* Ajuste fino de posição */
+    color: white;
+}
+
+.icon-moon {
+    margin-right: 5px; /* Ajuste fino de posição */
+}
+
+/* =========================================
+   1. CONFIGURAÇÃO DAS CORES (VARIÁVEIS)
+   ========================================= */
+:root {
+    /* Tema Claro (Padrão) */
+    --bg-page: #f0f2f5;
+    --bg-card: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #555555;
+    --accent-color: #00674F; /* Verde Aston Martin */
+    --tag-bg: #e8f5f1;
+    --tag-text: #00674F;
+    --border-color: #eee;
+    --shadow: rgba(0,0,0,0.1);
+}
+
+/* Tema Escuro (Ativado Pelo JS) */
+body.dark-mode {
+    --bg-page: #121212;
+    --bg-card: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --accent-color: #00A883;
+    --tag-bg: #2d2d2d;
+    --tag-text: #00A883;
+    --border-color: #333;
+    --shadow: rgba(0,0,0,0.5);
+}
+
+/* Tema Aston Martin F1 (Ativado pelo Carro) */
+body.aston-mode {
+    --bg-page: #001A15;       /* Verde Racing Profundo */
+    --bg-card: #002420;       
+    --text-primary: #ffffff;  
+    --text-secondary: #b0c4de;
+    --accent-color: #CEDC00;  /* NEON LIME GREEN */
+    --tag-bg: #003d33;        
+    --tag-text: #CEDC00;      
+    --border-color: #004d40;
+    --shadow: rgba(206, 220, 0, 0.15);
+}
+
+/* =========================================
+   2. ESTILOS GERAIS
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 20px;
+    position: relative;
+}
+
+/* --- Container Principal (Papel) --- */
+.container {
+    max-width: 900px;
+    background-color: var(--bg-card);
+    margin: 0 auto;
+    box-shadow: 0 4px 15px var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+
+    /* Configuração 3D para a animação de virar folha */
+    transition: transform 0.3s; 
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+/* --- Cabeçalho --- */
+.profile-header {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Ajustes Específicos de Modo */
+body.dark-mode .profile-header {
+    background-color: #004d3b; 
+}
+
+body.aston-mode .profile-header {
+    background: linear-gradient(135deg, #002420 0%, #004d40 100%);
+    border-bottom: 3px solid #CEDC00;
+}
+body.aston-mode h1, body.aston-mode a {
+    color: #CEDC00;
+    text-shadow: 0 0 5px rgba(206, 220, 0, 0.4);
+}
+
+.profile-img {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--bg-card);
+}
+
+.profile-info h1 {
+    font-size: 2.2rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;
+}
+.profile-info h2 {
+    font-size: 1.1rem; font-weight: 300; opacity: 0.9; margin-bottom: 15px; color: #e0e0e0;
+}
+.contact-info {
+    font-size: 0.9rem; display: flex; flex-direction: column; gap: 5px; opacity: 0.95; color: #fff;
+}
+
+/* --- Layout Interno --- */
+.main-content { display: flex; padding: 40px; gap: 40px; }
+.sidebar { width: 30%; border-right: 1px solid var(--border-color); padding-right: 20px; }
+.content-body { width: 70%; }
+
+/* --- Tipografia --- */
+h3 {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px; margin-bottom: 15px; font-size: 1.2rem; text-transform: uppercase;
+}
+h4 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 2px; }
+p, li { font-size: 0.95rem; color: var(--text-secondary); }
+a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
+
+/* --- Listas e Skills --- */
+.skills-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.skills-list li {
+    background-color: var(--tag-bg); color: var(--tag-text);
+    padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;
+    border: 1px solid var(--border-color);
+}
+.simple-list { list-style: none; }
+.simple-list li { margin-bottom: 5px; }
+
+/* --- Experiência e Footer --- */
+.job-item { margin-bottom: 20px; }
+.company { display: block; font-weight: bold; color: var(--text-primary); }
+.date { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-style: italic; }
+
+/* =========================================
+   RODAPÉ (FOOTER) - LinkedIn e Hobbies
+   ========================================= */
+.footer {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: var(--bg-page);
+    border-top: 1px solid var(--border-color);
+    display: flex; flex-direction: column; align-items: center; gap: 15px;
+}
+
+/* Botão do LinkedIn Atualizado */
+.linkedin-card {
+    /* Mudamos para Flexbox para alinhar ícone e texto */
+    display: inline-flex; 
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaço entre o ícone e o texto */
+    
+    background-color: #0077b5;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 30px;
+    text-decoration: none; font-weight: bold; font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+}
+
+/* Tamanho do ícone SVG */
+/* Atualize este bloco no seu CSS */
+.linkedin-icon {
+    width: 20px;
+    height: 20px;
+    position: static !important; /* O SEGREDO: Obriga ele a ficar parado no lugar */
+    display: block;
+    margin: 0;
+    filter: invert(1);
+}
+    /* Se o seu SVG for preto e você quiser branco, pode tentar inverter com filtro: */
+    /* filter: invert(1); */ 
+
+.linkedin-card:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+}
+
+/* --- MODO ASTON MARTIN (NEON) --- */
+/* Adicionamos um filtro para pintar o ícone de Neon no modo F1 */
+body.aston-mode .linkedin-card {
+    background-color: transparent; 
+    border: 2px solid #CEDC00; 
+    color: #CEDC00; 
+    box-shadow: 0 0 10px rgba(206, 220, 0, 0.2);
+}
+
+/* Isso tenta forçar o ícone a ficar da cor Neon usando filtros */
+body.aston-mode .linkedin-icon {
+    filter: sepia(100%) saturate(10000%) hue-rotate(40deg) brightness(1.2);
+}
+
+body.aston-mode .linkedin-card:hover {
+    background-color: #CEDC00;
+    color: #002420; 
+    box-shadow: 0 0 20px rgba(206, 220, 0, 0.6);
+}
+
+/* Quando passar o mouse no modo F1, o ícone volta a ficar escuro para contraste */
+body.aston-mode .linkedin-card:hover .linkedin-icon {
+    filter: brightness(0); 
+}
+
+body.aston-mode .hobbies-section strong { color: #CEDC00; }
+
+/* =========================================
+   3. BOTÕES E ANIMAÇÕES
+   ========================================= */
+
+/* --- Switch Sol/Lua (Superior Direito) --- */
+.theme-switch-wrapper {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+}
+.theme-switch {
+    display: inline-block; height: 34px; width: 70px; position: relative;
+}
+.theme-switch input { display: none; }
+.slider {
+    background-color: #ff4500;
+    bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0;
+    transition: .4s;
+    border-radius: 34px; border: 2px solid white;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 5px;
+}
+.slider:before {
+    background-color: #fff;
+    bottom: 3px; content: ""; height: 24px; left: 4px; position: absolute;
+    transition: .4s; width: 24px; border-radius: 50%; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+input:checked + .slider { background-color: #1a1a1a; }
+input:checked + .slider:before { transform: translateX(36px); }
+.icon-sun, .icon-moon { font-size: 16px; z-index: 1; user-select: none; }
+.icon-sun { color: white; margin-left: 2px; }
+.icon-moon { margin-right: 2px; }
+
+
+/* =========================================
+   ATUALIZAÇÃO DAS ANIMAÇÕES
+   Coloque isso no final do seu CSS, substituindo 
+   as animações antigas do carro e da página.
+   ========================================= */
+
+/* --- 1. Configuração do Botão F1 --- */
+.f1-btn {
+    position: fixed;
+    top: 70px;
+    right: 30px; /* Posição inicial na direita */
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    border: 2px solid #CEDC00;
+    background-color: #002420;
+    font-size: 1.5rem;
+    cursor: pointer; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s; /* Adicionado opacity na transição */
+}
+
+.f1-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #CEDC00;
+}
+
+/* --- NOVA ANIMAÇÃO: Carro Passando (Drive By) --- */
+/* Essa classe será adicionada pelo JS ao clicar */
+.carro-andando {
+    /* O carro vai da direita para a esquerda em 1.5s */
+    animation: driveBy 1.5s ease-in-out forwards;
+}
+
+@keyframes driveBy {
+    0% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    15% {
+        /* Inclina um pouco para cima, como se estivesse acelerando */
+        transform: translateX(-20px) rotate(-15deg);
+    }
+    80% {
+        /* Já está quase do outro lado da tela e começa a desaparecer */
+        opacity: 1;
+    }
+    100% {
+        /* Move 100% da largura da tela para a esquerda (-100vw) e some */
+        transform: translateX(calc(-100vw + 50px)) rotate(-5deg);
+        opacity: 0; /* Desaparece suavemente no final */
+    }
+}
+
+
+/* --- 2. Configuração do Papel (Container) --- */
+.container {
+    max-width: 900px;
+    background-color: var(--bg-card);
+    margin: 0 auto;
+    box-shadow: 0 4px 15px var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+
+    /* Configuração 3D */
+    transition: transform 0.3s; 
+    transform-style: preserve-3d;
+    
+    /* MUDANÇA IMPORTANTE: Define o eixo de rotação na borda ESQUERDA */
+    transform-origin: left center;
+}
+
+/* --- NOVA ANIMAÇÃO: Virar Página da Direita para Esquerda --- */
+.virar-pagina {
+    animation: efeitoViradaEsquerda 1.5s ease-in-out forwards;
+}
+
+@keyframes efeitoViradaEsquerda {
+    0% {
+        transform: perspective(2000px) rotateY(0deg);
+    }
+    50% { 
+        /* Gira para "dentro" da tela (-90deg) baseado no eixo esquerdo */
+        /* Aumentei a perspectiva para 2000px para suavizar o efeito 3D */
+        transform: perspective(2000px) rotateY(-90deg);
+        opacity: 0.6; /* Fica ligeiramente transparente no meio do giro */
+    }
+    100% { 
+        /* Volta ao normal */
+        transform: perspective(2000px) rotateY(0deg); 
+        opacity: 1; 
+    }
+}
+
+/* --- Letra da Música no Rodapé --- */
+.alonso-lyrics {
+    opacity: 0;                /* Começa invisível */
+    max-height: 0;             /* Não ocupa espaço */
+    overflow: hidden;
+    transform: translateY(20px); /* Começa um pouco para baixo */
+    transition: all 0.5s ease;   /* Animação suave */
+    
+    /* Estilo do texto */
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.2rem;
+    margin-top: 0;
+}
+
+/* QUANDO O MODO ASTON MARTIN ESTÁ ATIVO: */
+body.aston-mode .alonso-lyrics {
+    opacity: 1;                /* Fica visível */
+    max-height: 50px;          /* Ganha espaço para aparecer */
+    transform: translateY(0);  /* Sobe para o lugar certo */
+    margin-top: 15px;          /* Cria um espaço dos outros elementos */
+    
+    /* Cor Neon */
+    color: #CEDC00;
+    text-shadow: 0 0 10px rgba(206, 220, 0, 0.8); /* Brilho forte */
+    
+    /* Animação de pulso (como se estivesse cantando) */
+    animation: pulsoNeon 1s infinite alternate;
+}
+
+@keyframes pulsoNeon {
+    from { text-shadow: 0 0 10px rgba(206, 220, 0, 0.5); transform: scale(1); }
+    to { text-shadow: 0 0 20px rgba(206, 220, 0, 1); transform: scale(1.05); }
+}
+
+/* Classe utilitária para links com sublinhado */
+a.link-padrao {
+    text-decoration: underline;
+}
