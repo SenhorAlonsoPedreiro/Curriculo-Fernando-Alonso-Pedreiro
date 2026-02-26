@@ -148,6 +148,21 @@
         const toggleSwitch = document.getElementById('checkbox');
         const curriculo = document.getElementById('curriculo-papel');
 
+        // 1. SELECIONA O ELEMENTO DO TEXTO E GUARDA O ORIGINAL
+        const resumoElemento = document.querySelector('.summary-text');
+        // Guarda o conteúdo de "Resumo Profissional" na memória para usar depois
+        const textoOriginal = resumoElemento.innerHTML;
+
+        // 2. CRIA O NOVO TEXTO (A HISTÓTIA COMPLETA)
+        const textoHistoria = `
+            <strong>DA GLÓRIA AO REBOCO:</strong> A lenda começou aos 3 anos de idade, quando ganhou seu primeiro Kart feito pelo pai. 
+            Desde então, Fernando Alonso dominou o mundo, tornando-se Bicampeão Mundial de Fórmula 1 e desafiando os limites em Le Mans e Indianápolis. 
+            <br><br>
+            Agora, aos 44 anos, buscando novos desafios longe dos holofotes, o "Príncipe das Astúrias" decidiu se aposentar das pistas e mudar para Irecê, na Bahia. 
+            Após se formar no SENAI, ele aplica a precisão milimétrica das curvas de Mônaco no assentamento de blocos e acabamentos finos. 
+            Seu novo objetivo? Construir o futuro, tijolo por tijolo. 🏎️🧱
+        `;
+        
         f1Btn.addEventListener('click', () => {
 
             // 1. Toca o som do motor (Arrancada)
@@ -186,6 +201,9 @@
 
                     // (A música vai tocar sozinha quando o motor acabar por causa do 'onended' lá em cima)
 
+                    // TROCA O TEXTO PARA A BIOGRAFIA
+                    resumoElemento.innerHTML = textoHistoria;
+
                 } else {
                     // SE DESLIGOU O MODO F1 (Clicou de novo para sair):
                     // Para a música do Alonso imediatamente se ela estiver tocando
@@ -193,6 +211,10 @@
                         musicaAlonso.pause();
                         musicaAlonso.currentTime = 0; // Reseta a música
                     }
+
+                    // DEVOLVE O TEXTO ORIGINAL DE PEDREIRO
+                    resumoElemento.innerHTML = textoOriginal;
+
                 }
 
             }, 750);
@@ -209,6 +231,10 @@
             toggleSwitch.addEventListener('change', (e) => {
                 // Se mexer no botão normal, desliga o modo Aston e para a música
                 body.classList.remove('aston-mode');
+
+                //Se clicar no sol/lua, o texto volta ao original de pedreiro
+                resumoElemento.innerHTML = textoOriginal;
+
                 if (musicaAlonso) {
                     musicaAlonso.pause();
                     musicaAlonso.currentTime = 0;
